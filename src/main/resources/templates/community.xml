@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 여기서 namespace는 @Mapper를 지정한 Interface인 즉 패키지포함해서 MemoDao를 작성해야 함. -->
+<mapper namespace="kr.co.ictedu.myictstudy.dao.UpBoardDao">
+	<insert id="add" parameterType="upvo">
+		INSERT INTO upboard values(upboard_seq.NEXTVAL,
+		#{title}, #{writer}, #{content}, #{imgn}, 0, #{reip}, SYSDATE)
+	</insert>
+	<select id="list" parameterType="map" resultType="upvo">
+		SELECT num, title, writer, CONTENT, hit, reip, bdate, imgn, row_num FROM
+		(SELECT num, title, writer, CONTENT, hit, reip, bdate, imgn, ROW_NUMBER()
+		OVER(ORDER BY num desc) AS row_num FROM UPBOARD
+		<if test="searchType != null and searchValue != null">
+			<where>
+				<choose>
+					<when test="searchType == 1">
+						writer like '%' || #{searchValue} || '%'
+					</when>
+					<when test="searchType == 2">
+						title like '%' || #{searchValue} || '%'
+					</when>
+					<when test="searchType == 3">
+						content like '%' || #{searchValue} || '%'
+					</when>
+				</choose>
+			</where>
+		</if>
+		) numbered_rows WHERE row_num BETWEEN #{begin} AND #{end}
+	</select>
+	<select id="totalCount" resultType="int" parameterType="map">
+		SELECT COUNT(*) cnt FROM upboard
+		<if test="searchType != null and searchValue != null">
+			<where>
+				<choose>
+					<when test="searchType == 1">
+						writer like '%' || #{searchValue} || '%'
+					</when>
+					<when test="searchType == 2">
+						title like '%' || #{searchValue} || '%'
+					</when>
+					<when test="searchType == 3">
+						content like '%' || #{searchValue} || '%'
+					</when>
+				</choose>
+			</where>
+		</if>
+	</select>
+	
+	<update id="hit" parameterType="int">
+		UPDATE upboard set hit=hit+1 WHERE num=#{num}
+	</update>
+	
+	<select id="detail" parameterType="int" resultType="upvo">
+		SELECT num, title, writer, CONTENT, hit, reip, bdate, imgn FROM upboard WHERE num=#{num}
+	</select>
+	
+	<delete id="del" parameterType="int">
+		DELETE FROM upboard WHERE num=#{num}
+	</delete>
+</mapper>
