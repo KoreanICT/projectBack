@@ -49,9 +49,6 @@ public class CommunityController {
 	
 	@PostMapping("/communityAdd")
 	public ResponseEntity<?> communityAdd(CommunityVO vo, HttpServletRequest request) {
-		if(!request.getRemoteAddr().equals("192.168.0.45")) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업로드 금지");
-		}
 		
 		// VO에 클라이언트의 아이피를 저장
 		vo.setReip(request.getRemoteAddr());

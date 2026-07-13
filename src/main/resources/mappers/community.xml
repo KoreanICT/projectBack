@@ -10,7 +10,7 @@
 	<select id="list" parameterType="map" resultType="comvo"> SELECT num, title,
 		writer, CONTENT, hit, reip, cdate, imgn, row_num FROM (SELECT num,
 		title, writer, CONTENT, hit, reip, cdate, imgn, ROW_NUMBER() OVER(ORDER
-		BY num desc) AS row_num FROM community) <if
+		BY num desc) AS row_num FROM community <if
 			test="searchType != null and searchValue != null">
 			<where>
 				<choose>
