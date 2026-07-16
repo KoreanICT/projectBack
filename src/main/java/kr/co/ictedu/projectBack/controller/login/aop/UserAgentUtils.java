@@ -1,4 +1,4 @@
-package kr.co.ictedu.projectBack.contoller.login.aop;
+package kr.co.ictedu.projectBack.controller.login.aop;
 
 
 public class UserAgentUtils {

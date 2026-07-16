@@ -1,4 +1,4 @@
-package kr.co.ictedu.projectBack.contoller.member;
+package kr.co.ictedu.projectBack.controller.member;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
