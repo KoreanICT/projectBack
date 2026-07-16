@@ -1,4 +1,4 @@
-package kr.co.ictedu.projectBack.contoller.login.aop;
+package kr.co.ictedu.projectBack.controller.login.aop;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
