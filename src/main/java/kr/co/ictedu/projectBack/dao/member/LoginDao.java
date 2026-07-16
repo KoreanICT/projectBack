@@ -11,7 +11,7 @@ import kr.co.ictedu.projectBack.vo.MemberVO;
 @Mapper
 public interface LoginDao {
 	@Select("SELECT NAME, COUNT(*) cnt FROM MEMBER WHERE \r\n "
-			+ "id=#{id} and password=#{pwd} group by name")
+			+ "email=#{email} and pwd=#{pwd} group by name")
 	Map<String, Object> loginCheck(MemberVO vo);
 
 }

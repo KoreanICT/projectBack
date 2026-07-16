@@ -53,7 +53,7 @@ public class LoginLoginAdvice {
         }
     }
 
-    @Around("execution(* kr.co.ictedu.projectBack.contoller.member.LoginController.doLog*(..))")
+    @Around("execution(* kr.co.ictedu.projectBack.controller.member.LoginController.doLog*(..))")
     public String loginLogger(ProceedingJoinPoint jp) {
         Object[] fd = jp.getArgs();
         String rpath = null;
