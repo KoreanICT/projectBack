@@ -7,10 +7,9 @@
 		mnum, id, pwd, name, nick, email, mphone, storecode, storeaddr,
 		logintype, authority, regdate
 		) VALUES (
-		member_seq.nextval, #{id}, #{pwd}, #{name}, #{nick}, #{email},
-		#{mphone}, #{storecode}, #{storeaddr}, #{logintype}, #{authority},
-		sysdate
-		)
+		member_seq.nextval, 
+		#{id}, #{pwd}, #{name}, #{nick}, #{email}, #{mphone}, #{storecode}, #{storeaddr}, 
+		#{logintype}, #{authority},sysdate)
 	</insert>
 
 	<select id="countByEmail" resultType="int" parameterType="string">
