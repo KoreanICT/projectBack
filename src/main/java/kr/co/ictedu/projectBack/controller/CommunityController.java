@@ -1,4 +1,4 @@
-package kr.co.ictedu.projectBack.contoller;
+package kr.co.ictedu.projectBack.controller;
 
 import java.io.File;
 import java.util.HashMap;
