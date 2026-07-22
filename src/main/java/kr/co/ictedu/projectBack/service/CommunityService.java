@@ -20,6 +20,10 @@ public class CommunityService {
 		communityDao.add(vo);
 		
 	}
+	
+	public void update(CommunityVO vo) {
+		communityDao.update(vo);
+	}
 
 	public List<CommunityVO> list(Map<String, String> map) {
 		return communityDao.list(map);
