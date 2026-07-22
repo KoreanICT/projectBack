@@ -39,5 +39,9 @@ out/
 ### 환경설정 안올라가게 ###
 **/application.properties
 
+<<<<<<< HEAD
 ### 메타데이터 ###
+=======
+### metadata ###
+>>>>>>> 227a914cadc4abe172f0e8f90ffab7719d522809
 .metadata/
