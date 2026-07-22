@@ -40,8 +40,12 @@ out/
 **/application.properties
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ### 메타데이터 ###
 =======
 ### metadata ###
 >>>>>>> 227a914cadc4abe172f0e8f90ffab7719d522809
+=======
+### metadata ###
+>>>>>>> 551caab7e2cd6247453fa29c93746cf46322741c
 .metadata/
