@@ -16,5 +16,7 @@ public class InquiryVO {
 	private String iwriter;
 	private String icontent;
 	private String idate;
+	private int membernum;
+	private String imgn;
 	private MultipartFile mfile;
 }
