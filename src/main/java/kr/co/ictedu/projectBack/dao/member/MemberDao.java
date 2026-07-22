@@ -11,9 +11,9 @@ public interface MemberDao {
 	void insertMember(MemberVO vo);
 	
 	int countByEmail(String email);
-	@Select("Select Count(*) cnt From member where email = #{email}")
 	int checkEmail(String email);
 	int countById(String id);
 	int countByNick(String nick);
+	
 }
 

@@ -26,12 +26,16 @@ public class MemberController {
 		memberService.create(memberDTO);
 		return ResponseEntity.ok("회원가입이 완료되었습니다.");
 	}
-
-	@GetMapping("/emailCheck")
-	public int emailCheck(@RequestParam("email") String email) {
-		System.out.println(email);
-	    return memberService.checkEmail(email);
+	@GetMapping("/checkId")
+	public ResponseEntity<Integer> checkId(@RequestParam("id") String id) {
+	    int count = memberService.checkId(id);
+	    return ResponseEntity.ok(count); // 0이면 사용 가능, 1 이상이면 중복
 	}
+//	@GetMapping("/emailCheck")
+//	public int emailCheck(@RequestParam("email") String email) {
+//		System.out.println(email);
+//	    return memberService.checkEmail(email);
+//	}
 }
 
 

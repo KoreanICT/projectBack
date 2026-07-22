@@ -31,7 +31,11 @@ public class MemberService {
         System.out.println("5");
     }
 
-    public int checkEmail(String email) {
-        return memberDao.countByEmail(email);
+    public int checkId(String id) {
+        return memberDao.countById(id);
     }
+
+    public int checkNick(String nick) {
+        return memberDao.countByNick(nick);
+	}
 }
