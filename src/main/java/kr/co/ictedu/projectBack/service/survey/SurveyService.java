@@ -1,6 +1,7 @@
 package kr.co.ictedu.projectBack.service.survey;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +22,7 @@ public class SurveyService {
 	/**
 	 * @param SurveyVO, 관리자가 추가할 고유한 평가지
 	 * @param SurveyQuestionsVO, 관리자가 추가할 고유한 평가지의 평가 항목
-	 * @detail SurveyVO를 받아 우선적으로 평가지를 DB에 저장한 뒤 SurveyQuestionsVO를 받아 평가지에 들어갈 평가 항목을 DB에 저장합니다.
+	 * @detail SurveyVO를 받아 우선적으로 평가지를 DB에 저장한 뒤 SurveyQuestionsVO를 받아 평가지에 들어갈 평가 항목을 DB에 저장합니다. 
 	 * */
 	@Transactional
 	public void insertSurvey(SurveyVO svo) {
@@ -37,12 +38,29 @@ public class SurveyService {
 		}
 		surveyDao.insertQuestions(questionList);
 	}
-	
-	public Map selectContents() {
+	/**
+	 * @detail 회원이 평가 화면 렌더링 시 DB에서 최근에 작성된 평가지를 조회해 옵니다.
+	 * @return HashMap, 기본적으로 surveyVO가 있는 Map 안에 질문이 들어있는 Map을 넣어 이중 Map 객체를 반환합니다.
+	 * */
+	public HashMap<String, Object> selectSurvey() {
 		SurveyVO svo = surveyDao.selectSurvey();
 		List<SurveyQuestionsVO> qlist = surveyDao.selectQuestions(svo.getSvnum());
 		
-		return null;
+		HashMap<String, Object> surveyDataMap = new HashMap<>();
+		
+		Map<Integer, Object> questionMap = new HashMap<>();
+	
+		for (int i=1 ;i<=qlist.size();i++) {
+			questionMap.put(i, qlist.get(i));
+		}
+		
+		surveyDataMap.put("svnum", svo.getSvnum());
+		surveyDataMap.put("code", svo.getCode());
+		surveyDataMap.put("sub", svo.getSub());
+		surveyDataMap.put("sdate", svo.getSdate());
+		surveyDataMap.put("question", questionMap);
+
+		return surveyDataMap;
 	}
 }
 

@@ -21,7 +21,7 @@
 	</select>
 	
 	<select id="selectQuestions" parameterType="num" resultType="sqvo">
-		SELECT QUESTIONS_ID, QUESTIONS_TEXT FROM SURVEY_QUESTIONS
+		SELECT QUESTIONS_TEXT FROM SURVEY_QUESTIONS
 		WHERE SVNUM = #{SVNUM}
 		ORDER BY QUESTIONS_ID
 	</select>
@@ -33,12 +33,5 @@
 		INSERT INTO SURVEY_RESULT VALUES ()
 		INSERT INTO SURVEY_RESULT VALUES ()
 	</insert>
-	
-	<select id="selectQuestions" parameterType="Long" resultType="sqvo">
-		
-	</select>
-	
-	<select id="" parameterType="" resultType="">
-		
-	</select>
+
 </mapper>
