@@ -29,6 +29,7 @@ public class MemberController {
 
 	@GetMapping("/emailCheck")
 	public int emailCheck(@RequestParam("email") String email) {
+		System.out.println(email);
 	    return memberService.checkEmail(email);
 	}
 }

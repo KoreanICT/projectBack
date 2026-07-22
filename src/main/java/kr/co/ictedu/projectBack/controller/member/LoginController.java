@@ -27,6 +27,8 @@ public class LoginController {
 	public String doLogin (HttpSession session, HttpServletRequest req,
 			@RequestHeader("User-Agent") String userAgent, @RequestBody MemberVO vo
 			) {
+		
+		System.out.println("dologin");
 		Map<String, Object> result = loginService.loginCheck(vo);
 		System.out.println("result :"+result);
 		
@@ -36,6 +38,7 @@ public class LoginController {
 			if(cnt == 1) {
 				System.out.println("세션 처리 완료!");
 				vo.setName(result.get("NAME").toString());
+				vo.setMnum(((Number) result.get("MNUM")).intValue());
 				session.setAttribute("loginMember", vo);
 				return "success";
 			}
@@ -54,8 +57,9 @@ public class LoginController {
 	public MemberVO session(HttpSession session) {
 		MemberVO loginMember = (MemberVO) session.getAttribute("loginMember");
 		if(loginMember != null) {
-			System.out.println(loginMember.getId());
+			System.out.println(loginMember.getEmail());
 			loginMember.setPwd(null);
+			System.out.println(loginMember.getMnum());
 		}
 		return loginMember; 
 	}

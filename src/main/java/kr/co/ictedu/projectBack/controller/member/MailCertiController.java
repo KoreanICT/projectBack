@@ -21,6 +21,8 @@ public class MailCertiController {
 	private EmailSender emailSender;
 	@Autowired
 	private CertiNumRedisDao certiNumRedisDao;
+	
+	
 	@PostMapping("/emailCheck")
 	public int sendEmail(@RequestBody EmailCheckVO email) {
 		System.out.println("요청 처리됨" + email.getEmail());

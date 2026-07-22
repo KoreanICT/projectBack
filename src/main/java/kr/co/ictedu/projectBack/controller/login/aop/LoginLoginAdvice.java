@@ -29,10 +29,10 @@ public class LoginLoginAdvice {
             HttpServletRequest request = (HttpServletRequest) fd[1];
             MemberVO vo = (MemberVO) session.getAttribute("loginMember");
             
-            if (vo != null) { // 로그인 된 정보가 있다는 것
-                lvo.setMemberemail(vo.getId()); // 사용자 ID 세팅
-                lvo.setStatus(status);      // 로그인 / 로그아웃 상태 세팅
-                lvo.setReip(request.getRemoteAddr()); // 접속 IP 세팅
+            if (vo != null) { 
+                lvo.setMemberemail(vo.getEmail()); 
+                lvo.setStatus(status);     
+                lvo.setReip(request.getRemoteAddr()); 
                 
                 // 브라우저 및 운영체제 정보 파싱 후 세팅
                 String userAgent = request.getHeader("User-Agent");

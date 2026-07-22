@@ -3,28 +3,23 @@
 <mapper namespace="kr.co.ictedu.projectBack.dao.member.MemberDao">
 
 	<insert id="insertMember" parameterType="mvo">
-		INSERT INTO member (
-		mnum, id, pwd, name, nick, email, mphone, storecode, storeaddr,
-		logintype, authority, regdate
-		) VALUES (
-		member_seq.nextval, #{id}, #{pwd}, #{name}, #{nick}, #{email},
-		#{mphone}, #{storecode}, #{storeaddr}, #{logintype}, #{authority},
-		sysdate
-		)
+		INSERT INTO member(
+		mnum, id, pwd, name, nick, email, verified, mphone, grade, storecode, 
+		storeaddr, logintype, authority, regdate
+		) VALUES
+		member_seq.nextval, 
+		#{mnum}, #{id}, #{pwd}, #{name}, #{nick}, #{email}, #{mphone}, #{storecode}, #{storeaddr}, 
+		#{logintype}, #{authority},sysdate)
 	</insert>
 
 	<select id="countByEmail" resultType="int" parameterType="string">
 		SELECT COUNT(*) FROM member WHERE email = #{email}
 	</select>
 	<select id="countById" resultType="int" parameterType="string">
-		SELECT COUNT(*)
-		FROM member
-		WHERE id = #{id}
+		SELECT COUNT(*) FROM member WHERE id = #{id}
 	</select>
 
 	<select id="countByNick" resultType="int" parameterType="string">
-		SELECT COUNT(*)
-		FROM member
-		WHERE nick = #{nick}
+		SELECT COUNT(*) FROM member WHERE nick = #{nick}
 	</select>
 </mapper>
