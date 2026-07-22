@@ -9,10 +9,15 @@ import kr.co.ictedu.projectBack.vo.CommentsVO;
 
 @Mapper
 public interface CommentsDao {
-void add(CommentsVO vo);
-List<CommentsVO> list(Map<String, String> map);
-int totalCount(Map<String, String> map);
-void hit(int num);
-CommentsVO detail(int num);
-void del(int num);
+	void add(CommentsVO vo);
+
+	List<CommentsVO> list(Map<String, String> map);
+
+	int totalCount(Map<String, String> map);
+
+	void hit(int num);
+
+	CommentsVO detail(int num);
+
+	void del(int num);
 }

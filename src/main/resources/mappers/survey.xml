@@ -18,12 +18,5 @@
 	<insert id="insertRatings" parameterType="srvo">
 		INSERT INTO SURVEY_RESULT VALUES ()
 	</insert>
-	
-	<select id="selectQuestions" parameterType="Long" resultType="sqvo">
-		
-	</select>
-	
-	<select id="" parameterType="" resultType="">
-		
-	</select>
+
 </mapper>
