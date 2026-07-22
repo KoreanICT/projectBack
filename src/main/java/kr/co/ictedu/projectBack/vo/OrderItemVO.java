@@ -17,5 +17,4 @@ public class OrderItemVO {
 	private int oisumprice;
 	private int oiamount;
 	private int ofnum;
-	private int stocknum;
 }
