@@ -15,7 +15,22 @@
 		SELECT * FROM DUAL
 	</insert>
 	
+	<select id="selectSurvey" resultType="surveyvo">
+		SELECT SVNUM, CODE, SUB, SDATE FROM SURVEY
+		WHERE SVNUM = (SELECT MAX(SVNUM) FROM SURVEY)
+	</select>
+	
+	<select id="selectQuestions" parameterType="num" resultType="sqvo">
+		SELECT QUESTIONS_ID, QUESTIONS_TEXT FROM SURVEY_QUESTIONS
+		WHERE SVNUM = #{SVNUM}
+		ORDER BY QUESTIONS_ID
+	</select>
+	
 	<insert id="insertRatings" parameterType="srvo">
+		INSERT INTO SURVEY_RESULT VALUES (#{SVNUM}, #{MNUM}, #{CODE} )
+		INSERT INTO SURVEY_RESULT VALUES ()
+		INSERT INTO SURVEY_RESULT VALUES ()
+		INSERT INTO SURVEY_RESULT VALUES ()
 		INSERT INTO SURVEY_RESULT VALUES ()
 	</insert>
 	

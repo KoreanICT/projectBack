@@ -10,7 +10,13 @@ import kr.co.ictedu.projectBack.vo.SurveyVO;
 
 @Mapper
 public interface SurveyDao {
+	
 	 void insertSurvey(SurveyVO vo);
 	 
 	 void insertQuestions(List<SurveyQuestionsVO> list);
+	 
+	 SurveyVO selectSurvey();
+	 
+	 List<SurveyQuestionsVO> selectQuestions(int svnum);
+	 
 }

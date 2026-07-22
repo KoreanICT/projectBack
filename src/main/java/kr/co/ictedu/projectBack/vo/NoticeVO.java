@@ -6,11 +6,12 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.Getter;
 import lombok.Setter;
 // 공지 사항 메인 페이지 상상도
-@Alias("nomi")
+@Alias("nomivo")
 @Getter
 @Setter
 
 public class NoticeVO {
+	
 	private int nnum;
 	private int nhit;
 	private String ntitle;
