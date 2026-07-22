@@ -42,23 +42,17 @@ public class SurveyService {
 	 * @detail 회원이 평가 화면 렌더링 시 DB에서 최근에 작성된 평가지를 조회해 옵니다.
 	 * @return HashMap, 기본적으로 surveyVO가 있는 Map 안에 질문이 들어있는 Map을 넣어 이중 Map 객체를 반환합니다.
 	 * */
-	public HashMap<String, Object> selectSurvey() {
+	public Map<String, Object> selectSurvey() {
 		SurveyVO svo = surveyDao.selectSurvey();
-		List<SurveyQuestionsVO> qlist = surveyDao.selectQuestions(svo.getSvnum());
+		List<SurveyQuestionsVO> qlist = (ArrayList<SurveyQuestionsVO>) surveyDao.selectQuestions(svo.getSvnum());
 		
-		HashMap<String, Object> surveyDataMap = new HashMap<>();
-		
-		Map<Integer, Object> questionMap = new HashMap<>();
-	
-		for (int i=1 ;i<=qlist.size();i++) {
-			questionMap.put(i, qlist.get(i));
-		}
+		Map<String, Object> surveyDataMap = new HashMap<>();
 		
 		surveyDataMap.put("svnum", svo.getSvnum());
 		surveyDataMap.put("code", svo.getCode());
 		surveyDataMap.put("sub", svo.getSub());
 		surveyDataMap.put("sdate", svo.getSdate());
-		surveyDataMap.put("question", questionMap);
+		surveyDataMap.put("question", qlist);
 
 		return surveyDataMap;
 	}
