@@ -5,7 +5,7 @@ import org.apache.ibatis.type.Alias;
 import lombok.Getter;
 import lombok.Setter;
 
-@Alias("tomi")
+@Alias("tomivo")
 @Getter
 @Setter
 public class CommentsVO {
