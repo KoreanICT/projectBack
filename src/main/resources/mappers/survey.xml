@@ -26,8 +26,8 @@
 		ORDER BY QUESTIONS_ID
 	</select>
 	
-	<select id="selectAvarages" parameterType="" resultType="java.util.List">
-		SELECT AVG(RATING) AS AVG FROM SURVEY
+	<select id="selectAvarages" parameterType="map" resultType="map">
+		SELECT QUEISTIONS_ID, AVG(RATING) AS AVG FROM SURVEY
 		WHERE QUESTIONS_ID IN 
 		<foreach collection="list" item="item" open="(" separator="," close=")">
 			 #{item.question_Id}
