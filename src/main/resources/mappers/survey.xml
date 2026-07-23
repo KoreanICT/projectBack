@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.ictedu.projectBack.dao.survey.ISurveyDao">
+
+	<insert id="insertSurvey" parameterType="surveyvo">
+		INSERT INTO SURVEY VALUES(survey_seq.nextVal,#{code},#{sub},sysdate)
+	</insert>
+
+	<insert id="insertQuestions" parameterType="java.util.List">
+		INSERT ALL
+		<foreach collection="list" item="item">
+			INTO SURVEY_QUESTIONS (SVNUM, QUESTIONS_ID, QUESTIONS_TEXT)
+			VALUES (SURVEY_SEQ.CURRVAL, #{item.QUESTIONS_ID}, #{item.QUESTIONS_TEXT})
+		</foreach>
+		SELECT * FROM DUAL
+	</insert>
+	
+	<insert id="insertRatings" parameterType="srvo">
+		INSERT INTO SURVEY_RESULT VALUES ()
+	</insert>
+
+</mapper>

@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.Getter;
 import lombok.Setter;
 
-@Alias("comi")
+@Alias("comivo")
 @Getter
 @Setter
 public class CommunityVO {

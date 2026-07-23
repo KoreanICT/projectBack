@@ -5,18 +5,18 @@ import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Getter;
 import lombok.Setter;
-// 공지 사항 메인 페이지 상상도
-@Alias("nomivo")
+
+@Alias("invo")
 @Getter
 @Setter
+public class InquiryVO {
 
-public class NoticeVO {
-	private int nnum;
-	private int nhit;
-	private String ntitle;
-	private String nwriter;
-	private String ncontent;
-	private String ndate;
+	private int inum;
+	private String ititle;
+	private String iwriter;
+	private String icontent;
+	private String idate;
+	private int membernum;
+	private String imgn;
 	private MultipartFile mfile;
-	
 }
