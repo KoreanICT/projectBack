@@ -24,34 +24,42 @@ public class SurveyController {
 	private SurveyService service;
 	
 	/**
-	 * 
-	 * @param vo
-	 * @return
+	 * @param SurveyVO
 	 * @detail 
 	 */
-	@PostMapping("/insertSurvey")
-	public ResponseEntity<String> insertSurvey(@RequestBody SurveyVO vo) {
-		service.insertSurvey(vo);
+	@PostMapping("/addSurvey")
+	public ResponseEntity<String> insertSurvey(@RequestBody SurveyVO svo) {
+		service.addSurvey(svo);
 		return ResponseEntity.ok("success");
 	}
 	
+	/**
+	 * @param vo
+	 * @detail 
+	 */
+	@PostMapping("/addResult")
+	public ResponseEntity<String> addResult(@RequestBody SurveyVO svo) {
+		service.addResult(svo);
+		return ResponseEntity.ok("success");
+	}
+	
+	/**
+	 * @return
+	 * @detail 
+	 */
 	@GetMapping("/selectSurvey")
-	public Map<String, Object> getMethodName(@RequestParam String param) {
+	public Map<String, Object> getSurvey() {
 		Map<String, Object> surveyDataMap = service.selectSurvey();
 		return surveyDataMap;
 	}
 	
-	@PostMapping("path")
-	public String postMethodName(@RequestBody String entity) {
-		//TODO: process POST request
-		
-		return entity;
+	/**
+	 * @return
+	 * @detail 
+	 */
+	@GetMapping("/getAvg")
+	public Map<String, Object> getAverage() {
+		Map<String, Object> avgMap = service.getAverage();
+		return avgMap;
 	}
-	
-	@GetMapping("path")
-	public String getMethoName(@RequestParam String param) {
-		return new String();
-	}
-	
-	
 }

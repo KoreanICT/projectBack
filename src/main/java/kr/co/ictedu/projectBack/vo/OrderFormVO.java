@@ -17,7 +17,6 @@ public class OrderFormVO {
 	private String oname;
 	private String oaddr;
 	private String ophone;
-	private String ofdate;
 	private int membermnum;
 	private String oimg;
 	private String ofcompany;

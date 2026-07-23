@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import kr.co.ictedu.projectBack.vo.SurveyQuestionsVO;
+import kr.co.ictedu.projectBack.vo.SurveyResultVO;
 import kr.co.ictedu.projectBack.vo.SurveyVO;
 
 @Mapper
@@ -13,9 +14,9 @@ public interface SurveyDao {
 	
 	 void insertSurvey(SurveyVO vo);
 	 
-	 void insertQuestions(List<SurveyQuestionsVO> list);
+	 void insertQuestions(List<SurveyQuestionsVO> qlist);
 	 
-	 void insertRatings(Map<String, Object> resMap);
+	 void insertResult(List<SurveyResultVO> rlist);
 	 
 	 void deleteSurvey();
 	 
@@ -23,6 +24,6 @@ public interface SurveyDao {
 	 
 	 List<SurveyQuestionsVO> selectQuestions(int svnum);
 	 
-	 Map<String, Object> selectAverages(Map<String, Object> resultMap);
+	 Map<String, Object> selectAverage(int svnum);
 	 
 }

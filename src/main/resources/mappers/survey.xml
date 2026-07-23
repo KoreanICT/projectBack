@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="kr.co.ictedu.projectBack.dao.survey.ISurveyDao">
+<mapper namespace="kr.co.ictedu.projectBack.dao.survey.SurveyDao">
 
 	<!--관리자 평가지 등록 매퍼 쿼리문-->
 	<insert id="insertSurvey" parameterType="surveyvo">
@@ -14,11 +14,11 @@
 			INTO SURVEY_QUESTIONS (SVNUM, QUESTIONS_ID, QUESTIONS_TEXT)
 			VALUES (SURVEY_SEQ.CURRVAL, #{item.questions_id}, #{item.questions_text})
 		</foreach>
-		SELECT * FROM DUAL
+		SELECT 1 FROM DUAL
 	</insert>
 	
 	<!--평점 등록 매퍼 쿼리문-->
-	<insert id="insertRatings" parameterType="map">
+	<insert id="insertResult" parameterType="java.util.List">
 		INSERT ALL
 		<foreach collection="list" item="item">
 			INTO SURVEY_RESULT (MNUM, SVNUM, QUESTIONS_ID, RATING, REQUEST, RESDATE)
@@ -42,7 +42,7 @@
 	
 	<!--평가지 별, 질문 하나 당 평균 출력 매퍼 쿼리문-->
 	<select id="selectAverages" parameterType="int" resultType="map">
-		SELECT QUESTIONS_ID, AVG(RATING) AS AVG FROM SURVEY_RESULT
+		SELECT QUESTIONS_ID, ROUND(AVG(RATING),2) AS AVG FROM SURVEY_RESULT
 		WHERE QUESTIONS_ID IN 
 		<foreach collection="list" item="item" open="(" separator="," close=")">
 			 #{item.questions_id}
