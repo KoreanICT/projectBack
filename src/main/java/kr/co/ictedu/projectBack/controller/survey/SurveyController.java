@@ -35,7 +35,7 @@ public class SurveyController {
 	
 	/**
 	 * @param vo
-	 * @detail 
+	 * @detail
 	 */
 	@PostMapping("/addResult")
 	public ResponseEntity<String> addResult(@RequestBody SurveyVO svo) {
@@ -45,7 +45,7 @@ public class SurveyController {
 	
 	/**
 	 * @return
-	 * @detail 
+	 * @detail
 	 */
 	@GetMapping("/selectSurvey")
 	public Map<String, Object> getSurvey() {
@@ -55,7 +55,7 @@ public class SurveyController {
 	
 	/**
 	 * @return
-	 * @detail 
+	 * @detail
 	 */
 	@GetMapping("/getAvg")
 	public Map<String, Object> getAverage() {

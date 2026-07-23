@@ -4,7 +4,8 @@
 
 	<!--관리자 평가지 등록 매퍼 쿼리문-->
 	<insert id="insertSurvey" parameterType="surveyvo">
-		INSERT INTO SURVEY VALUES(survey_seq.nextVal,#{code},#{sub},sysdate)
+		INSERT INTO SURVEY (svnum, code, sub, sdate)
+		VALUES(survey_seq.nextVal,#{code},#{sub},sysdate)
 	</insert>
 
 	<!--관리자 평가지 평가 항목 등록 매퍼 쿼리문-->
@@ -22,32 +23,32 @@
 		INSERT ALL
 		<foreach collection="list" item="item">
 			INTO SURVEY_RESULT (MNUM, SVNUM, QUESTIONS_ID, RATING, REQUEST, RESDATE)
-			VALUES (#{MNUM}, #{SVNUM}, #{item.questions_id}, #{item.rating}, #{REQUEST}, SYSDATE)
+			VALUES (#{item.mnum}, #{item.svnum}, #{item.questions_id}, #{item.rating}, #{item.request}, SYSDATE)
 		</foreach>
 		SELECT 1 FROM DUAL
 	</insert>
 	
 	<!--최신 평가지 출력 매퍼 쿼리문-->
 	<select id="selectSurvey" resultType="surveyvo">
-		SELECT SVNUM, CODE, SUB, SDATE FROM SURVEY
+		SELECT svnum, code, sub, sdate FROM SURVEY
 		WHERE SVNUM = (SELECT MAX(SVNUM) FROM SURVEY)
 	</select>
 	
 	<!--최신 평가지의 평가 항목 출력 매퍼 쿼리문-->
 	<select id="selectQuestions" parameterType="int" resultType="sqvo">
-		SELECT QUESTIONS_TEXT FROM SURVEY_QUESTIONS
+		SELECT questions_text FROM SURVEY_QUESTIONS
 		WHERE SVNUM = #{SVNUM}
 		ORDER BY QUESTIONS_ID
 	</select>
 	
 	<!--평가지 별, 질문 하나 당 평균 출력 매퍼 쿼리문-->
 	<select id="selectAverages" parameterType="int" resultType="map">
-		SELECT QUESTIONS_ID, ROUND(AVG(RATING),2) AS AVG FROM SURVEY_RESULT
+		SELECT questions_id, ROUND(AVG(RATING),1) AS avg FROM SURVEY_RESULT
 		WHERE QUESTIONS_ID IN 
 		<foreach collection="list" item="item" open="(" separator="," close=")">
-			 #{item.questions_id}
+			 #{item}
 		</foreach>
-		AND SVNUM = #{SVNUM} GROUP BY QUESTIONS_ID
+		AND SVNUM = #{SVNUM} GROUP BY QUESTIONS_ID ORDER BY QUESTIONS_ID
 	</select>
 	
 	<!--평가지 삭제 매퍼 쿼리문-->
