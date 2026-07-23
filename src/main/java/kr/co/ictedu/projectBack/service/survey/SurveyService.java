@@ -38,6 +38,16 @@ public class SurveyService {
 		}
 		surveyDao.insertQuestions(questionList);
 	}
+	
+	/**
+	 * @detail 
+	 * @return 
+	 * */
+	@Transactional
+	public void insertRatings(Map<String, Object> resMap) {
+		
+	}
+	
 	/**
 	 * @detail 회원이 평가 화면 렌더링 시 DB에서 최근에 작성된 평가지를 조회해 옵니다.
 	 * @return HashMap, 기본적으로 surveyVO가 있는 Map 안에 질문이 들어있는 Map을 넣어 이중 Map 객체를 반환합니다.
@@ -56,5 +66,16 @@ public class SurveyService {
 
 		return surveyDataMap;
 	}
+	
+	/**
+	 * @detail 
+	 * @return 
+	 * */
+	public Map<String, Object> getAverages(Map<String, Object> avgMap) {
+		
+		
+		return null;
+	}
+	
 }
 

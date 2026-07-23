@@ -15,8 +15,14 @@ public interface SurveyDao {
 	 
 	 void insertQuestions(List<SurveyQuestionsVO> list);
 	 
+	 void insertRatings(Map<String, Object> resMap);
+	 
+	 void deleteSurvey();
+	 
 	 SurveyVO selectSurvey();
 	 
 	 List<SurveyQuestionsVO> selectQuestions(int svnum);
+	 
+	 Map<String, Object> selectAverages(Map<String, Object> resultMap);
 	 
 }
