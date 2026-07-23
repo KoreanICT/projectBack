@@ -15,7 +15,31 @@
 		SELECT * FROM DUAL
 	</insert>
 	
+	<select id="selectSurvey" resultType="surveyvo">
+		SELECT SVNUM, CODE, SUB, SDATE FROM SURVEY
+		WHERE SVNUM = (SELECT MAX(SVNUM) FROM SURVEY)
+	</select>
+	
+	<select id="selectQuestions" parameterType="int" resultType="sqvo">
+		SELECT QUESTIONS_TEXT FROM SURVEY_QUESTIONS
+		WHERE SVNUM = #{SVNUM}
+		ORDER BY QUESTIONS_ID
+	</select>
+	
+	<select id="selectAvarages" parameterType="" resultType="java.util.List">
+		SELECT AVG(RATING) AS AVG FROM SURVEY
+		WHERE QUESTIONS_ID IN 
+		<foreach collection="list" item="item" open="(" separator="," close=")">
+			 #{item.question_Id}
+		</foreach>
+		AND SVNUM = #{SVNUM} GROUP BY QUESTIONS_ID
+	</select>
+	
 	<insert id="insertRatings" parameterType="srvo">
+		INSERT INTO SURVEY_RESULT VALUES (#{SVNUM}, #{MNUM}, #{CODE} )
+		INSERT INTO SURVEY_RESULT VALUES ()
+		INSERT INTO SURVEY_RESULT VALUES ()
+		INSERT INTO SURVEY_RESULT VALUES ()
 		INSERT INTO SURVEY_RESULT VALUES ()
 	</insert>
 
