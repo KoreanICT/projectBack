@@ -34,17 +34,16 @@ public class MailCertiController {
 	    System.out.println("아이디 중복확인 요청: " + id);
 
 	    int checkId = memberService.checkId(id);
-	    return (checkId == 0) ? 0 : 1; // 0: 사용 가능, 1: 중복
+	    return (checkId == 0) ? 0 : 1; 
 	}
-	// 닉네임 중복확인 (버튼 없이 실시간 확인용)
+	// 닉네임 중복확인
 	@PostMapping("/nickCheck")
 	public int checkNick(@RequestBody Map<String, String> request) {
 	    String nick = request.get("nick");
 	    System.out.println("닉네임 중복확인 요청: " + nick);
 
-	    // MemberService에 checkNick 메서드가 필요합니다.
 	    int checkNick = memberService.checkNick(nick); 
-	    return (checkNick == 0) ? 0 : 1; // 0: 사용 가능, 1: 중복
+	    return (checkNick == 0) ? 0 : 1; 
 	}
 
 	// 이메일 중복확인 + 인증번호 발송
@@ -54,7 +53,6 @@ public class MailCertiController {
 
 	    // 이메일 중복 체크
 	    int checkEmail = emailSender.duplicateEmail(email.getEmail());
-
 	    if (checkEmail == 0) {
 	        emailSender.sendEmail(email.getEmail());
 	        return 0; 

@@ -2,7 +2,9 @@ package kr.co.ictedu.projectBack.controller.member;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,13 +32,31 @@ public class MemberController {
 	public ResponseEntity<Integer> checkId(@RequestParam("id") String id) {
 	    int count = memberService.checkId(id);
 	    return ResponseEntity.ok(count); // 0이면 사용 가능, 1 이상이면 중복
+	}//http://192.168.0.19/projectBack/api/member/mypage
+	@GetMapping("/mypage")
+    public MemberVO getMyInfo(@RequestParam("id") String id) {
+        MemberVO vo = memberService.getMemberById(id);
+        if (vo != null) {
+            vo.setPwd(null);
+        }
+        return vo;
+    }
+	@PostMapping("/update")
+    public int updateMyInfo(@RequestBody MemberVO vo) {
+        return memberService.updateMember(vo);
+    }
+	@DeleteMapping("/withdraw")
+	public String memberWithdraw(@RequestParam("num") int num) {
+	    memberService.withdrawMember(num);
+	    return "탈퇴 완료";
 	}
-//	@GetMapping("/emailCheck")
-//	public int emailCheck(@RequestParam("email") String email) {
-//		System.out.println(email);
-//	    return memberService.checkEmail(email);
-//	}
-}
+  }
+	
+	
+
+
+
+
 
 
 

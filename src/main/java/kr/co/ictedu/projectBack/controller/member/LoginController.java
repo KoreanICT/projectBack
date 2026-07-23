@@ -38,12 +38,16 @@ public class LoginController {
 			if(cnt == 1) {
 				System.out.println("세션 처리 완료!");
 				vo.setName(result.get("NAME").toString());
-				vo.setMnum(((Number) result.get("MNUM")).intValue());
+				vo.setMnum(((Number) result.get("MNUM")).intValue()); 
+
 				session.setAttribute("loginMember", vo);
+
 				return "success";
 			}
 		}
 		return "fail";
+	   
+
 	}
 	@GetMapping("/dologout")
 	public String doLogout(HttpSession session, HttpServletRequest request,
@@ -52,16 +56,21 @@ public class LoginController {
 		session.invalidate();
 		return "logout";
 	}
-	
 	@GetMapping("/session")
 	public MemberVO session(HttpSession session) {
-		MemberVO loginMember = (MemberVO) session.getAttribute("loginMember");
-		if(loginMember != null) {
-			System.out.println(loginMember.getEmail());
-			loginMember.setPwd(null);
-			System.out.println(loginMember.getMnum());
-		}
-		return loginMember; 
+
+	    System.out.println("★★★★★ session 호출 ★★★★★");
+	    System.out.println("session id = " + session.getId());
+
+	    MemberVO loginMember = (MemberVO) session.getAttribute("loginMember");
+	    System.out.println("loginMember = " + loginMember);
+	    if(loginMember == null) {
+	        System.out.println("세션 없음");
+	        return null;
+	    }
+
+	    System.out.println("세션 있음");
+	    return loginMember;
 	}
 		
 		
