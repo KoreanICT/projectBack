@@ -98,12 +98,12 @@ public class MemberController {
 		return response;
 	}
 
-	// 선택된 회원 탈퇴
-	@PutMapping("/deleteMembers")
-	public ResponseEntity<?> deleteMembers(@RequestBody List<Integer> memberNums) {
+	// 선택된 회원 등급 변경
+	@PutMapping("/updateGrade")
+	public ResponseEntity<?> updateGrade(@RequestBody Map<String, Object> param) {
 
-		memberService.deleteMembers(memberNums);
+	    memberService.updateGrade(param);
 
-		return ResponseEntity.ok().build();
+	    return ResponseEntity.ok("등급이 변경되었습니다.");
 	}
 }

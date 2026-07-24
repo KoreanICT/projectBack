@@ -24,7 +24,7 @@ public interface MemberDao {
 	List<MemberVO> memberList(Map<String, String> map);
 	int totalCount(Map<String, String> map);
 	
-	// 체크된 회원 선택 탈퇴
-	int deleteMembers(List<Integer> mnums);
+	// 체크된 회원 등급 변경
+	int updateGrade(Map<String, Object> param);
 }
 

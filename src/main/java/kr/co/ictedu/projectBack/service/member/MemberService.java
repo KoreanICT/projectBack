@@ -66,9 +66,9 @@ public class MemberService {
 		return memberDao.totalCount(map);
 	}
 	
-	// 선택된 회원 탈퇴 
-	public void deleteMembers(List<Integer> memberNums){
-	    memberDao.deleteMembers(memberNums);
+	// 선택된 회원 등급 변경
+	public int updateGrade(Map<String, Object> param) {
+	    return memberDao.updateGrade(param);
 	}
 }
 
