@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="kr.co.ictedu.projectBack.dao.StockDao">
+
+<insert id="insertStock"
+            parameterType="kr.co.ictedu.projectBack.vo.StockVO">
+
+        INSERT INTO stock (
+            snum,
+            isbn,
+            sname,
+            spublisher,
+            author,
+            samount,
+            sprice,
+            sdate,
+            scategory,
+            membernum
+        )
+        VALUES (
+            stock_seq.NEXTVAL,
+            #{isbn},
+            #{sname},
+            #{spublisher},
+            #{author},
+            #{samount},
+            #{sprice},
+            SYSDATE,
+            #{scategory},
+            #{membernum}
+        )
+
+    </insert>
+
+
+
+    <insert id="insertImages"
+            parameterType="java.util.List">
+
+        <foreach collection="list"
+                 item="image"
+                 separator=" "
+                 open="INSERT ALL"
+                 close="SELECT * FROM dual">
+
+            INTO stockimage (
+                stockimage,
+                stocksnum
+            )
+            VALUES (
+                #{image.stockimage},
+                stock_seq.CURRVAL
+            )
+
+        </foreach>
+
+    </insert>
+
+
+    <select id="stockList"
+            parameterType="map"
+            resultType="kr.co.ictedu.projectBack.vo.StockVO">
+
+        SELECT
+            s.snum,
+            s.isbn,
+            s.sname,
+            s.spublisher,
+            s.author,
+            s.samount,
+            s.sprice,
+
+            TO_CHAR(
+                s.sdate,
+                'YYYY-MM-DD'
+            ) AS sdate,
+
+            s.scategory,
+            s.membernum,
+
+            (
+                SELECT MIN(si.stockimage)
+                FROM stockimage si
+                WHERE si.stocksnum = s.snum
+            ) AS stockimage
+
+        FROM stock s
+
+        <where>
+
+            <!-- 검색어가 있을 경우 -->
+            <if test="searchValue != null
+                      and searchValue != ''">
+
+                (
+                    s.sname LIKE '%' || #{searchValue} || '%'
+
+                    OR
+
+                    s.author LIKE '%' || #{searchValue} || '%'
+
+                    OR
+
+                    s.isbn LIKE '%' || #{searchValue} || '%'
+                )
+
+            </if>
+
+
+            <!-- 카테고리 검색 -->
+            <if test="scategory != null
+                      and scategory != ''">
+
+                AND s.scategory = #{scategory}
+
+            </if>
+
+        </where>
+
+        ORDER BY s.snum DESC
+
+    </select>
+
+
+
+    <select id="totalCount"
+            parameterType="map"
+            resultType="int">
+
+        SELECT COUNT(*)
+
+        FROM stock s
+
+        <where>
+
+            <if test="searchValue != null
+                      and searchValue != ''">
+
+                (
+                    s.sname LIKE '%' || #{searchValue} || '%'
+
+                    OR
+
+                    s.author LIKE '%' || #{searchValue} || '%'
+
+                    OR
+
+                    s.isbn LIKE '%' || #{searchValue} || '%'
+                )
+
+            </if>
+
+
+            <if test="scategory != null
+                      and scategory != ''">
+
+                AND s.scategory = #{scategory}
+
+            </if>
+
+        </where>
+
+    </select>
+
+
+
+
+    <resultMap id="stockDetailMap"
+               type="kr.co.ictedu.projectBack.vo.StockVO">
+
+        <id property="snum"
+            column="snum"/>
+
+        <result property="isbn"
+                column="isbn"/>
+
+        <result property="sname"
+                column="sname"/>
+
+        <result property="spublisher"
+                column="spublisher"/>
+
+        <result property="author"
+                column="author"/>
+
+        <result property="samount"
+                column="samount"/>
+
+        <result property="sprice"
+                column="sprice"/>
+
+        <result property="sdate"
+                column="sdate"/>
+
+        <result property="scategory"
+                column="scategory"/>
+
+        <result property="membernum"
+                column="membernum"/>
+
+      
+        <collection
+                property="getimglist"
+                ofType="kr.co.ictedu.projectBack.vo.StockImagesVO">
+
+            <result property="stockimage"
+                    column="stockimage"/>
+
+            <result property="stocksnum"
+                    column="stocksnum"/>
+
+        </collection>
+
+    </resultMap>
+
+
+    <select id="stockDetail"
+            parameterType="int"
+            resultMap="stockDetailMap">
+
+        SELECT
+            s.snum,
+            s.isbn,
+            s.sname,
+            s.spublisher,
+            s.author,
+            s.samount,
+            s.sprice,
+
+            TO_CHAR(
+                s.sdate,
+                'YYYY-MM-DD'
+            ) AS sdate,
+
+            s.scategory,
+            s.membernum,
+
+            si.stockimage,
+            si.stocksnum
+
+        FROM stock s
+
+        LEFT JOIN stockimage si
+            ON s.snum = si.stocksnum
+
+        WHERE s.snum = #{snum}
+
+        ORDER BY si.stockimage
+
+    </select>
+
+
+
+    <update id="updateStock"
+            parameterType="kr.co.ictedu.projectBack.vo.StockVO">
+
+        UPDATE stock
+
+        SET
+            isbn = #{isbn},
+            sname = #{sname},
+            spublisher = #{spublisher},
+            author = #{author},
+            samount = #{samount},
+            sprice = #{sprice},
+            scategory = #{scategory},
+            membernum = #{membernum}
+
+        WHERE snum = #{snum}
+
+    </update>
+
+
+  
+
+    <delete id="deleteStockImages"
+            parameterType="int">
+
+        DELETE FROM stockimage
+        WHERE stocksnum = #{snum}
+
+    </delete>
+
+
+
+    <delete id="deleteStock"
+            parameterType="int">
+
+        DELETE FROM stock
+        WHERE snum = #{snum}
+
+    </delete>
+
+
+</mapper>
