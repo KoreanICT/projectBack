@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.ictedu.projectBack.dao.survey.SurveyDao;
+import kr.co.ictedu.projectBack.vo.MemberVO;
 import kr.co.ictedu.projectBack.vo.SurveyQuestionsVO;
+import kr.co.ictedu.projectBack.vo.SurveyResultVO;
 import kr.co.ictedu.projectBack.vo.SurveyVO;
 
 @Service
@@ -25,21 +27,60 @@ public class SurveyService {
 	 * @detail SurveyVO를 받아 우선적으로 평가지를 DB에 저장한 뒤 SurveyQuestionsVO를 받아 평가지에 들어갈 평가 항목을 DB에 저장합니다. 
 	 * */
 	@Transactional
-	public void insertSurvey(SurveyVO svo) {
+	public void addSurvey(SurveyVO svo) {
 		surveyDao.insertSurvey(svo);
 		List<SurveyQuestionsVO> questionList = new ArrayList<>();
-		int i = 1;
-		for(SurveyQuestionsVO q : svo.getQuestions()) {
-			SurveyQuestionsVO questionVO = new SurveyQuestionsVO();
-			questionVO.setQuestions_id(i);
-			questionVO.setQuestions_text(q.getQuestions_text());
-			questionList.add(questionVO);
-			i++;
+		
+		if (svo != null) {
+			int i = 1;
+			for(SurveyQuestionsVO q : svo.getQuestions()) {
+				SurveyQuestionsVO sqvo = new SurveyQuestionsVO();
+				
+				sqvo.setQuestions_id(i);
+				sqvo.setQuestions_text(q.getQuestions_text());
+				
+				questionList.add(sqvo);
+				i++;
+			}
 		}
 		surveyDao.insertQuestions(questionList);
 	}
+	
 	/**
-	 * @detail 회원이 평가 화면 렌더링 시 DB에서 최근에 작성된 평가지를 조회해 옵니다.
+	 * @detail 
+	 * @return 
+	 * */
+	@Transactional
+	public void addResult(SurveyVO svo) {
+		
+		int svnum = svo.getSvnum();
+		List<SurveyResultVO> resultList = new ArrayList<>();
+		
+		if(svo != null) {
+			int i = 1;
+			for(SurveyResultVO r : svo.getResult()) {
+				SurveyResultVO srvo = new SurveyResultVO();
+				
+				srvo.setMnum(r.getMember().getMnum());
+				srvo.setSvnum(svnum);
+				srvo.setQuestions_id(i);
+				srvo.setRating(r.getRating());
+				
+				if(r.getRequest() != null) {
+					srvo.setRequest(r.getRequest());
+				} else {
+					srvo.setRequest("");
+				}
+				
+				i++;
+				resultList.add(srvo);
+			}
+		}
+		surveyDao.insertResult(resultList);
+	}
+	
+	/**
+	 * @detail 회원이 평가 화면 렌더링 시 DB에서 최근에 작성된 평가지를 조회합니다.
 	 * @return HashMap, 기본적으로 surveyVO가 있는 Map 안에 질문이 들어있는 Map을 넣어 이중 Map 객체를 반환합니다.
 	 * */
 	public Map<String, Object> selectSurvey() {
@@ -52,9 +93,36 @@ public class SurveyService {
 		surveyDataMap.put("code", svo.getCode());
 		surveyDataMap.put("sub", svo.getSub());
 		surveyDataMap.put("sdate", svo.getSdate());
-		surveyDataMap.put("question", qlist);
+		surveyDataMap.put("questions", qlist);
 
 		return surveyDataMap;
 	}
+	
+	/**
+	 * @detail 관리자가 평가 관리 화면 렌더링 시 평가 결과의 평균값을 해당 평가지의 정보와 함께 조회합니다.
+	 * @return Map<String, Object>; survey_result 테이블의 properties를 담은 list와 평가지의 정보를 담은 Map을 반환합니다.
+	 * */
+	public Map<String, Object> getAverage() {
+		
+		SurveyVO svo = surveyDao.selectSurvey();
+		
+		Map<String, Object> params = new HashMap<>();
+		
+		List<Integer> questionid = new ArrayList<>();
+		params.put("svnum", svo.getSvnum());
+		params.put("list", questionid);
+		
+		List<Map<String, Object>> resList = surveyDao.selectAverage(params);
+		
+		Map<String, Object> resMap = new HashMap<>();
+		resMap.put("svnum", svo.getSvnum());
+		resMap.put("code", svo.getCode());
+		resMap.put("sub", svo.getSub());
+		resMap.put("sdate", svo.getSdate());
+		resMap.put("result", resList);
+		
+		return resMap;
+	}
+	
 }
 

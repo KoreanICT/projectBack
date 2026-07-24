@@ -1,27 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="kr.co.ictedu.projectBack.dao.survey.ISurveyDao">
+<mapper namespace="kr.co.ictedu.projectBack.dao.survey.SurveyDao">
 
+	<!--관리자 평가지 등록 매퍼 쿼리문-->
 	<insert id="insertSurvey" parameterType="surveyvo">
-		INSERT INTO SURVEY VALUES(survey_seq.nextVal,#{code},#{sub},sysdate)
+		INSERT INTO SURVEY (svnum, code, sub, sdate)
+		VALUES(survey_seq.nextVal,#{code},#{sub},sysdate)
 	</insert>
 
+	<!--관리자 평가지 평가 항목 등록 매퍼 쿼리문-->
 	<insert id="insertQuestions" parameterType="java.util.List">
 		INSERT ALL
 		<foreach collection="list" item="item">
 			INTO SURVEY_QUESTIONS (SVNUM, QUESTIONS_ID, QUESTIONS_TEXT)
-			VALUES (SURVEY_SEQ.CURRVAL, #{item.QUESTIONS_ID}, #{item.QUESTIONS_TEXT})
+			VALUES (SURVEY_SEQ.CURRVAL, #{item.questions_id}, #{item.questions_text})
 		</foreach>
-		SELECT * FROM DUAL
+		SELECT 1 FROM DUAL
 	</insert>
 	
+	<!--평점 등록 매퍼 쿼리문-->
+	<insert id="insertResult" parameterType="java.util.List">
+		INSERT ALL
+		<foreach collection="list" item="item">
+			INTO SURVEY_RESULT (MNUM, SVNUM, QUESTIONS_ID, RATING, REQUEST, RESDATE)
+			VALUES (#{item.mnum}, #{item.svnum}, #{item.questions_id}, #{item.rating}, #{item.request}, SYSDATE)
+		</foreach>
+		SELECT 1 FROM DUAL
+	</insert>
+	
+	<!--최신 평가지 출력 매퍼 쿼리문-->
 	<select id="selectSurvey" resultType="surveyvo">
-		SELECT SVNUM, CODE, SUB, SDATE FROM SURVEY
+		SELECT svnum, code, sub, sdate FROM SURVEY
 		WHERE SVNUM = (SELECT MAX(SVNUM) FROM SURVEY)
 	</select>
 	
+	<!--최신 평가지의 평가 항목 출력 매퍼 쿼리문-->
 	<select id="selectQuestions" parameterType="int" resultType="sqvo">
-		SELECT QUESTIONS_TEXT FROM SURVEY_QUESTIONS
+		SELECT questions_text FROM SURVEY_QUESTIONS
 		WHERE SVNUM = #{SVNUM}
 		ORDER BY QUESTIONS_ID
 	</select>
@@ -30,17 +45,15 @@
 		SELECT AVG(RATING) AS AVG FROM SURVEY
 		WHERE QUESTIONS_ID IN 
 		<foreach collection="list" item="item" open="(" separator="," close=")">
-			 #{item.question_Id}
+			 #{item}
 		</foreach>
-		AND SVNUM = #{SVNUM} GROUP BY QUESTIONS_ID
+		AND SVNUM = #{SVNUM} GROUP BY QUESTIONS_ID ORDER BY QUESTIONS_ID
 	</select>
 	
-	<insert id="insertRatings" parameterType="srvo">
-		INSERT INTO SURVEY_RESULT VALUES (#{SVNUM}, #{MNUM}, #{CODE} )
-		INSERT INTO SURVEY_RESULT VALUES ()
-		INSERT INTO SURVEY_RESULT VALUES ()
-		INSERT INTO SURVEY_RESULT VALUES ()
-		INSERT INTO SURVEY_RESULT VALUES ()
-	</insert>
+	<!--평가지 삭제 매퍼 쿼리문-->
+	<delete id="deleteSurvey">
+		DELETE FROM SURVEY
+		WHERE SVNUM = (SELECT MIN(SVNUM) FROM SURVEY) PURGE
+	</delete>
 
 </mapper>
