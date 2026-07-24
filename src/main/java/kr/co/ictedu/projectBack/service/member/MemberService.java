@@ -65,6 +65,11 @@ public class MemberService {
 	public int totalCount(Map<String, String> map) {
 		return memberDao.totalCount(map);
 	}
+	
+	// 선택된 회원 탈퇴 
+	public void deleteMembers(List<Integer> memberNums){
+	    memberDao.deleteMembers(memberNums);
+	}
 }
 
 
