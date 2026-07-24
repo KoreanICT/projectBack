@@ -2,6 +2,7 @@ package kr.co.ictedu.projectBack.service.member;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.ictedu.projectBack.dao.member.MemberDao;
 import kr.co.ictedu.projectBack.vo.MemberVO;
@@ -31,7 +32,30 @@ public class MemberService {
         System.out.println("5");
     }
 
-    public int checkEmail(String email) {
-        return memberDao.countByEmail(email);
+    public int checkId(String id) {
+        return memberDao.countById(id);
+    }
+
+    public int checkNick(String nick) {
+        return memberDao.countByNick(nick);
+	}
+
+	public MemberVO getMemberById(String id) {
+		return memberDao.getMemberById(id);
+	}
+
+	public int updateMember(MemberVO vo) {
+		return memberDao.updateMember(vo);
+	}
+	
+	@Transactional
+	public boolean withdrawMember(int mnum) {
+		int result = memberDao.deleteMember(mnum);
+		return result > 0; 
     }
 }
+
+
+
+
+

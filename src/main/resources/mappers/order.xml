@@ -3,7 +3,7 @@
 <mapper namespace="kr.co.ictedu.projectBack.dao.OrderDao">
 	<insert id="addOrderForm" parameterType="ofvo">
 		INSERT INTO ORDERFORM (OFNUM,ONAME,OADDR,OPHONE,OFDATE,MEMBERMNUM,OIMG,OFCOMPANY)
-		VALUES (orderform_seq.NEXTVAL, #{oname}, #{oaddr}, #{ophone}, SYSDATE, 5, #{oimg}, #{ofcompany})
+		VALUES (orderform_seq.NEXTVAL, #{oname}, #{oaddr}, #{ophone}, SYSDATE, #{membernum}, #{oimg}, #{ofcompany})
 	</insert>
 	<insert id="addOrderItem" parameterType="java.util.List">
 		<!-- 현재 시퀀스 값 가져오기 -->
@@ -11,8 +11,7 @@
 			SELECT orderform_seq.currVal FROM dual
 		</selectKey>
 		<foreach collection="list" item="item" separator=" " open="insert all"
-			close="select * from dual"
-		>
+			close="select * from dual">
 			INTO ORDERITEM (OINUM,OINAME,OIPUBLISHER,OIPRICE,OISUMPRICE,OIAMOUNT,OFNUM)
 			VALUES (orderitem_seq.NEXTVAL, #{item.oiname}, #{item.oipublisher}, #{item.oiprice}, #{item.oisumprice}, #{item.oiamount}, #{id})
 		</foreach>

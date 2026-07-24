@@ -41,9 +41,8 @@
 		ORDER BY QUESTIONS_ID
 	</select>
 	
-	<!--평가지 별, 질문 하나 당 평균 출력 매퍼 쿼리문-->
-	<select id="selectAverages" parameterType="int" resultType="map">
-		SELECT questions_id, ROUND(AVG(RATING),1) AS avg FROM SURVEY_RESULT
+	<select id="selectAvarages" parameterType="int" resultType="java.util.List">
+		SELECT AVG(RATING) AS AVG FROM SURVEY
 		WHERE QUESTIONS_ID IN 
 		<foreach collection="list" item="item" open="(" separator="," close=")">
 			 #{item}

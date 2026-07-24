@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.ictedu.projectBack.dao.OrderDao;
 import kr.co.ictedu.projectBack.vo.OrderFormVO;
@@ -16,9 +17,16 @@ public class OrderService {
 	@Autowired
 	private OrderDao orderDao;
 
+	@Transactional
 	public void addOrder(OrderFormVO ofvo) {
 		orderDao.addOrderForm(ofvo);
 		List<OrderItemVO> list = ofvo.getOList();
+		for (OrderItemVO itemvo : list) {
+			int price = itemvo.getOiprice();
+			int amount = itemvo.getOiamount();
+			int sumprice = price * amount;
+			itemvo.setOisumprice(sumprice);
+		}
 		orderDao.addOrderItem(list);
 	}
 }
