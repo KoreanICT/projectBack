@@ -1,8 +1,10 @@
 package kr.co.ictedu.projectBack.dao.member;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
-
 import kr.co.ictedu.projectBack.vo.MemberVO;
 
 //kr.co.ictedu.projectBack.dao.member.MemberDao
@@ -17,5 +19,12 @@ public interface MemberDao {
 	MemberVO getMemberById(String id);
     int updateMember(MemberVO vo);
 	int deleteMember(int mnum);
+	
+	// 회원 전체 조회
+	List<MemberVO> memberList(Map<String, String> map);
+	int totalCount(Map<String, String> map);
+	
+	// 체크된 회원 선택 탈퇴
+	int deleteMembers(List<Integer> mnums);
 }
 

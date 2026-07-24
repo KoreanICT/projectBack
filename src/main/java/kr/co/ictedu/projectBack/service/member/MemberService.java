@@ -1,5 +1,8 @@
 package kr.co.ictedu.projectBack.service.member;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,6 +56,20 @@ public class MemberService {
 		int result = memberDao.deleteMember(mnum);
 		return result > 0; 
     }
+	
+	// 회원 전체 조회
+	public List<MemberVO> list(Map<String, String> map) {
+		return memberDao.memberList(map);
+	}
+	
+	public int totalCount(Map<String, String> map) {
+		return memberDao.totalCount(map);
+	}
+	
+	// 선택된 회원 탈퇴 
+	public void deleteMembers(List<Integer> memberNums){
+	    memberDao.deleteMembers(memberNums);
+	}
 }
 
 

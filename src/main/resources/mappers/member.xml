@@ -4,8 +4,8 @@
 	<!-- 회원가입 -->
 	<insert id="insertMember" parameterType="mvo">
 		INSERT INTO member (
-		mnum, id, pwd, name, nick, email, 
-		verified, mphone, grade, storecode, 
+		mnum, id, pwd, name, nick, email,
+		verified, mphone, grade, storecode,
 		storeaddr, logintype, authority, regdate
 		) VALUES (
 		member_seq.NEXTVAL, #{id}, #{pwd}, #{name}, #{nick}, #{email}, 'N',
@@ -29,20 +29,74 @@
 
 	<!-- 내 정보 조회 -->
 	<select id="getMemberById" parameterType="string" resultType="mvo">
-		SELECT mnum, id, name, nick, email, mphone, grade, storecode, storeaddr, authority, regdate
+		SELECT mnum, id, name, nick, email, mphone, grade, storecode, storeaddr,
+		authority, regdate
 		FROM member WHERE id = #{id}
 	</select>
 
 	<!--  내 정보 수정 -->
 	<update id="updateMember" parameterType="mvo">
-		UPDATE member SET nick = #{nick}, mphone = #{mphone}, storeaddr = #{storeaddr}
+		UPDATE member SET nick = #{nick}, mphone = #{mphone}, storeaddr =
+		#{storeaddr}
 		WHERE id = #{id}
 	</update>
-	
+
 	<!--  회원탈퇴 -->
 	<update id="deleteMember" parameterType="int">
-    	UPDATE member SET grade = 'WITHDRAWN' WHERE mnum = #{mnum}
+		UPDATE member SET grade = 'WITHDRAWN' WHERE mnum = #{mnum}
 	</update>
-	
-	
+
+	<!-- 전체 회원 조회 -->
+	<select id="memberList" parameterType="map" resultType="mvo"> SELECT mnum,
+		name, nick, email, mphone, storecode, storeaddr, grade, authority,
+		regdate row_num FROM (SELECT mnum, name, nick, email, mphone, storecode,
+		storeaddr, grade, authority, regdate, ROW_NUMBER() OVER(ORDER BY mnum
+		desc) AS row_num FROM member <if
+			test="searchType != null and searchValue != null">
+			<where>
+				<choose>
+					<when test="searchType == 1">
+						name like '%' || #{searchValue} || '%'
+					</when>
+					<when test="searchType == 2">
+						email like '%' || #{searchValue} || '%'
+					</when>
+					<when test="searchType == 3">
+						authority like '%' || #{searchValue} || '%'
+					</when>
+				</choose>
+			</where>
+		</if>
+		) numbered_rows WHERE row_num BETWEEN #{begin} AND #{end} </select>
+	<select id="totalCount" resultType="int" parameterType="map"> SELECT
+		COUNT(*) cnt FROM community <if
+			test="searchType != null and searchValue != null">
+			<where>
+				<choose>
+					<when test="searchType == 1">
+						cwriter like '%' || #{searchValue} || '%'
+					</when>
+					<when test="searchType == 2">
+						ctitle like '%' || #{searchValue} || '%'
+					</when>
+					<when test="searchType == 3">
+						ccontent like '%' || #{searchValue} || '%'
+					</when>
+				</choose>
+			</where>
+		</if>
+	</select>
+
+	<!-- 체크된 회원 선택 탈퇴 -->
+	<update id="deleteMembers" parameterType="list"> UPDATE member SET grade =
+		'WITHDRAWN' WHERE mnum IN 
+		<foreach collection="list"
+			item="mnum"
+			open="("
+			separator=","
+			close=")">
+			#{mnum}
+		</foreach>
+	</update>
+
 </mapper>
