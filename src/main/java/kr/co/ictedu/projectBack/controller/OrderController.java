@@ -30,8 +30,8 @@ public class OrderController {
 
 	@PostMapping("/orderForm")
 	public void handleOrderSubmit(
-			@RequestPart("orderData") OrderFormVO orderFormVO, // JSON 문자열로 넘어온 
-			@RequestParam("signature") MultipartFile file // signature로 넘어온 파일
+		@RequestPart("orderData") OrderFormVO orderFormVO, // JSON 문자열로 넘어온 order 
+		@RequestParam("signature") MultipartFile file // signature로 넘어온 파일
 	) {
 
 		if (!file.isEmpty()) {
