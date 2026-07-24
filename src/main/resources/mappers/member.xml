@@ -9,8 +9,7 @@
 		storeaddr, logintype, authority, regdate
 		) VALUES (
 		member_seq.NEXTVAL, #{id}, #{pwd}, #{name}, #{nick}, #{email}, 'N',
-		#{mphone}, 'REGULAR',#{storecode}, #{storeaddr},
-		'LOCAL','MEMBER',SYSDATE)
+		#{mphone}, 'REGULAR',#{storecode}, #{storeaddr}, 'LOCAL',#{authority},SYSDATE)
 	</insert>
 
 	<!-- 이메일 중복 체크 -->
