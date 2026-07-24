@@ -27,13 +27,21 @@ import kr.co.ictedu.projectBack.vo.PageVO;
 public class MemberController {
 	@Autowired
 	private MemberService memberService;
-
+	
+	@PostMapping("/admin/signup")
+	public ResponseEntity<?> adminSignup(
+	        @RequestBody MemberVO vo
+	) {
+	    vo.setAuthority("ADMIN");
+	    memberService.create(vo);
+	    return ResponseEntity.ok("관리자 생성 완료");
+	}
 	@PostMapping("/signup")
 	public ResponseEntity<?> memberjoin(@RequestBody MemberVO memberDTO) {
-		System.out.println("회원가입 요청 들어옴");
-
-		memberService.create(memberDTO);
-		return ResponseEntity.ok("회원가입이 완료되었습니다.");
+	    System.out.println("회원가입 요청 들어옴");
+	    memberDTO.setAuthority("MEMBER");
+	    memberService.create(memberDTO);
+	    return ResponseEntity.ok("회원가입이 완료되었습니다.");
 	}
 	@GetMapping("/checkId")
 	public ResponseEntity<Integer> checkId(@RequestParam("id") String id) {
