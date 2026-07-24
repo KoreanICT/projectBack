@@ -37,19 +37,15 @@ public class MemberController {
 	    memberService.create(memberDTO);
 	    return ResponseEntity.ok("회원가입이 완료되었습니다.");
 	}
-	@GetMapping("/checkId")
-	public ResponseEntity<Integer> checkId(@RequestParam("id") String id) {
-	    int count = memberService.checkId(id);
-	    return ResponseEntity.ok(count); // 0이면 사용 가능, 1 이상이면 중복
-	}//http://192.168.0.19/projectBack/api/member/mypage
+	
 	@GetMapping("/mypage")
-    public MemberVO getMyInfo(@RequestParam("id") String id) {
-        MemberVO vo = memberService.getMemberById(id);
-        if (vo != null) {
-            vo.setPwd(null);
-        }
-        return vo;
-    }
+	public MemberVO getMyInfo(@RequestParam("email") String email) {
+	    MemberVO vo = memberService.getMemberByEmail(email);
+	    if (vo != null) {
+	        vo.setPwd(null);
+	    }
+	    return vo;
+	}
 	@PostMapping("/update")
     public int updateMyInfo(@RequestBody MemberVO vo) {
         return memberService.updateMember(vo);
