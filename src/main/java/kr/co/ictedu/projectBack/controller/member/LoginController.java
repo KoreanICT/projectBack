@@ -22,32 +22,32 @@ public class LoginController {
 	@Autowired
 	private LoginService loginService;
 	
-	
 	@PostMapping("/dologin")
 	public String doLogin (HttpSession session, HttpServletRequest req,
 			@RequestHeader("User-Agent") String userAgent, @RequestBody MemberVO vo
-			) {
-		
+			) {		
 		System.out.println("dologin");
 		Map<String, Object> result = loginService.loginCheck(vo);
 		System.out.println("result :"+result);
 		
-		if(result != null && result.get("CNT") != null) {
-			
-			int cnt = ((Number)result.get("CNT")).intValue();
-			if(cnt == 1) {
-				System.out.println("세션 처리 완료!");
-				vo.setName(result.get("NAME").toString());
-				vo.setMnum(((Number) result.get("MNUM")).intValue()); 
-
-				session.setAttribute("loginMember", vo);
-
-				return "success";
-			}
+		if(result != null) {
+		    System.out.println("세션 처리 완료!");
+		    MemberVO loginMember = new MemberVO();
+		    loginMember.setMnum(((Number)result.get("MNUM")).intValue());
+		    loginMember.setId(result.get("ID").toString());
+		    loginMember.setName(result.get("NAME").toString());
+		    loginMember.setEmail(result.get("EMAIL").toString());
+		    loginMember.setNick(result.get("NICK").toString());
+		    loginMember.setMphone(result.get("MPHONE").toString());
+		    loginMember.setGrade(result.get("GRADE").toString());
+		    loginMember.setStorecode(result.get("STORECODE").toString());
+		    loginMember.setStoreaddr(result.get("STOREADDR").toString());
+		    loginMember.setAuthority(result.get("AUTHORITY").toString());
+		    session.setAttribute("loginMember", loginMember);
+		    return "success";
 		}
 		return "fail";
 	   
-
 	}
 	@GetMapping("/dologout")
 	public String doLogout(HttpSession session, HttpServletRequest request,
@@ -56,6 +56,7 @@ public class LoginController {
 		session.invalidate();
 		return "logout";
 	}
+	
 	@GetMapping("/session")
 	public MemberVO session(HttpSession session) {
 
@@ -68,11 +69,8 @@ public class LoginController {
 	        System.out.println("세션 없음");
 	        return null;
 	    }
-
 	    System.out.println("세션 있음");
 	    return loginMember;
-	}
-		
-		
-	}
+	}				
+}
 
