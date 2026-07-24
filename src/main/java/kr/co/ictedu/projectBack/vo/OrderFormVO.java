@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Alias("ofvo")
-@Setterhttps://github.com/KoreanICT/projectBack/pull/21/conflict?name=src%252Fmain%252Fjava%252Fkr%252Fco%252Fictedu%252FprojectBack%252Fvo%252FOrderFormVO.java&ancestor_oid=e65b7aeb8f46769ae01d7d51aeb9df3db4f1ee28&base_oid=3b3ceb12cf534fcff4424a5c4137c5d4d975f51f&head_oid=cc5e88e5ca32a1a9805773bca6f888b6001a460d
+@Setter
 @Getter
 public class OrderFormVO {
 
