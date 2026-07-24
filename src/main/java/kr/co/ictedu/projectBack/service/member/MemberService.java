@@ -51,6 +51,7 @@ public class MemberService {
 	@Transactional
 	public boolean withdrawMember(int mnum) {
 		int result = memberDao.deleteMember(mnum);
+		System.out.println("deleteMember result = " + result);
 		return result > 0; 
     }
 }

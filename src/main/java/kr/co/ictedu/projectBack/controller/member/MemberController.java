@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpSession;
 import kr.co.ictedu.projectBack.service.member.MemberService;
 import kr.co.ictedu.projectBack.vo.MemberVO;
 
@@ -54,8 +55,12 @@ public class MemberController {
         return memberService.updateMember(vo);
     }
 	@DeleteMapping("/withdraw")
-	public String memberWithdraw(@RequestParam("num") int num) {
+	public String memberWithdraw(
+	        @RequestParam("num") int num,
+	        HttpSession session
+	) { System.out.println("탈퇴 요청 num = " + num);
 	    memberService.withdrawMember(num);
+	    session.invalidate();
 	    return "탈퇴 완료";
 	}
   }
