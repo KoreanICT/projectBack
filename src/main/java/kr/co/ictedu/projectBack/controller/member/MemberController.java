@@ -1,5 +1,9 @@
 package kr.co.ictedu.projectBack.controller.member;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,8 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpServletRequest;
+import kr.co.ictedu.projectBack.common.PagingService;
 import kr.co.ictedu.projectBack.service.member.MemberService;
 import kr.co.ictedu.projectBack.vo.MemberVO;
+import kr.co.ictedu.projectBack.vo.PageVO;
 
 @RestController
 @RequestMapping("/api/member")
@@ -49,6 +56,40 @@ public class MemberController {
 	public String memberWithdraw(@RequestParam("num") int num) {
 	    memberService.withdrawMember(num);
 	    return "탈퇴 완료";
+	}
+	
+	// 페이징 처리 서비스 의존성 주입
+	@Autowired
+	private PagingService pagingService;
+	
+	// 회원 전체 조회
+	@RequestMapping("/memberList")
+	public Map<String, Object> memberList(
+			@RequestParam Map<String, String> paramMap, 
+			HttpServletRequest request
+			) {
+
+		String cPage = paramMap.get("cPage");
+		int totalCnt = memberService.totalCount(paramMap);
+		PageVO pageVO = pagingService.makePage(totalCnt, cPage);
+		
+		// Json으로 응답 처리 - 페이징 처리된 결과 리스트와 정보
+		Map<String, String> map = new HashMap<>(paramMap);
+		map.put("begin", String.valueOf(pageVO.getBeginPerPage()));
+		map.put("end", String.valueOf(pageVO.getEndPerPage()));
+		List<MemberVO> list = memberService.list(map);
+		
+
+		
+		Map<String, Object> response = new HashMap<>();
+		response.put("data", list); // 페이징 처리가 완료된 리스트를 저장한 데이터
+		response.put("totalItems", pageVO.getTotalRecord()); // 전체 게시물의 count
+		response.put("totalPages", pageVO.getTotalPage()); // 전체 페이지
+		response.put("currentPage", pageVO.getNowPage()); // 현재 페이지
+		response.put("startPage", pageVO.getStartPage()); // 블록의 시작
+		response.put("endPage", pageVO.getEndPage()); // 블록의 끝
+		
+		return response;
 	}
   }
 	
