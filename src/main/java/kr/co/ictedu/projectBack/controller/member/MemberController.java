@@ -32,7 +32,7 @@ public class MemberController {
 	@PostMapping("/signup")
 	public ResponseEntity<?> memberjoin(@RequestBody MemberVO memberDTO) {
 	    System.out.println("회원가입 요청 들어옴");
-	    memberDTO.setAuthority("MEMBER");
+	    //memberDTO.setAuthority("MEMBER");
 	    memberService.create(memberDTO);
 	    return ResponseEntity.ok("회원가입이 완료되었습니다.");
 	}
